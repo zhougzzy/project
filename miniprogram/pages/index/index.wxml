@@ -1,0 +1,367 @@
+<!--pages/index/index.wxml-->
+<view class="container pb-24">
+
+  <!-- 加载中 -->
+  <view wx:if="{{isLoading}}" class="loading-view">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 员工端视图 -->
+  <view wx:elif="{{userRole === 'WORKER'}}" class="worker-view">
+    <!-- 员工信息头部 -->
+    <view class="worker-header">
+      <!-- 装饰背景 -->
+      <view class="header-decoration">
+        <view class="deco-circle circle-1"></view>
+        <view class="deco-circle circle-2"></view>
+        <view class="deco-circle circle-3"></view>
+      </view>
+
+      <view class="header-main">
+        <!-- 头像 -->
+        <view class="avatar-wrapper">
+          <view class="avatar">
+            {{workerInfo.name[0]}}
+          </view>
+          <view class="avatar-badge">
+            <text>👷</text>
+          </view>
+        </view>
+
+        <!-- 员工信息 -->
+        <view class="info-wrapper">
+          <view class="greeting">您好，{{workerInfo.name}}</view>
+          <view class="team-row">
+            <view class="team-tag">
+              <text class="team-icon">🏢</text>
+              <text>{{workerInfo.team || '未分配班组'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 编辑按钮 -->
+      <view class="edit-btn" bindtap="goToEditWorker">
+        <text>编辑资料</text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 快捷统计卡片 -->
+    <view class="quick-stats">
+      <view class="stat-item" bindtap="goToMyRecords">
+        <view class="stat-icon bg-blue">
+          <text>📋</text>
+        </view>
+        <view class="stat-content">
+          <text class="stat-value">{{stats.attendanceCount || 0}}</text>
+          <text class="stat-label">考勤记录</text>
+        </view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item" bindtap="goToMyAdvance">
+        <view class="stat-icon bg-green">
+          <text>💰</text>
+        </view>
+        <view class="stat-content">
+          <text class="stat-value">¥{{stats.advanceTotal || 0}}</text>
+          <text class="stat-label">累计借支</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 上月考勤状态 -->
+    <view class="attendance-status-card {{isThisMonthSubmitted ? 'submitted' : 'pending'}}" bindtap="goToWorkerAttendance">
+      <view class="status-card-bg"></view>
+      <view class="status-card-content">
+        <view class="status-card-icon">
+          <text wx:if="{{isThisMonthSubmitted}}">✓</text>
+          <text wx:else>!</text>
+        </view>
+        <view class="status-card-info">
+          <text class="status-card-title">{{isThisMonthSubmitted ? '上月考勤已完成' : '上月考勤待填报'}}</text>
+          <text class="status-card-desc">{{isThisMonthSubmitted ? '点击查看详情' : '点击立即填报'}}</text>
+        </view>
+        <view class="status-card-arrow">
+          <text>›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能卡片 -->
+    <view class="function-cards">
+      <view class="section-header">
+        <text class="section-title">我的功能</text>
+      </view>
+
+      <!-- 填报考勤 -->
+      <navigator url="/pages/worker-attendance/worker-attendance" class="func-card primary">
+        <view class="func-icon-wrapper">
+          <view class="func-icon">📝</view>
+        </view>
+        <view class="func-info">
+          <view class="func-title">填报上月考勤</view>
+          <view class="func-desc">记录上月出勤情况</view>
+        </view>
+        <view class="func-arrow">
+          <text>›</text>
+        </view>
+      </navigator>
+
+      <!-- 我的考勤 -->
+      <navigator url="/pages/my-records/my-records" class="func-card">
+        <view class="func-icon-wrapper">
+          <view class="func-icon secondary">📋</view>
+        </view>
+        <view class="func-info">
+          <view class="func-title">我的考勤</view>
+          <view class="func-desc">查看历史考勤记录</view>
+        </view>
+        <view class="func-arrow">
+          <text>›</text>
+        </view>
+      </navigator>
+
+      <!-- 我的借支 -->
+      <navigator url="/pages/my-advance/my-advance" class="func-card">
+        <view class="func-icon-wrapper">
+          <view class="func-icon success">💰</view>
+        </view>
+        <view class="func-info">
+          <view class="func-title">我的借支</view>
+          <view class="func-desc">查看借支记录</view>
+        </view>
+        <view class="func-arrow">
+          <text>›</text>
+        </view>
+      </navigator>
+    </view>
+  </view>
+
+  <!-- 管理员端视图 -->
+  <view wx:elif="{{userRole === 'ADMIN'}}" class="admin-view">
+    <!-- 顶部统计卡片 -->
+    <view class="p-4">
+      <view class="bg-white rounded-xl p-5 shadow-sm border">
+        <view class="flex items-center justify-between mb-6">
+          <text class="text-sm font-bold text-slate-500">本月进度</text>
+
+          <!-- 月份选择器 -->
+          <picker mode="date" fields="month" value="{{reportMonth}}" bindchange="onMonthChange">
+            <view class="date-picker-box bg-primary-light text-primary font-bold rounded flex items-center gap-1">
+              {{reportMonth}} ▾
+            </view>
+          </picker>
+        </view>
+
+        <view class="grid-3">
+          <view class="stat-box bg-slate-50 border">
+            <text class="stat-label text-slate-500">应填报</text>
+            <text class="stat-value text-slate-900">{{summary.total}}</text>
+          </view>
+          <view class="stat-box bg-primary-light border-primary-light">
+            <text class="stat-label text-primary">已填报</text>
+            <text class="stat-value text-primary">{{summary.submitted}}</text>
+          </view>
+          <view class="stat-box bg-orange-50 border-orange-100">
+            <text class="stat-label text-orange-600">未填报</text>
+            <text class="stat-value text-orange-600">{{summary.pending}}</text>
+          </view>
+        </view>
+
+        <!-- 进度条 -->
+        <view class="mt-6">
+          <view class="flex justify-between items-center mb-3 text-xs">
+            <text class="font-bold text-slate-600">完成率</text>
+            <text class="font-black text-primary">{{completionRate}}%</text>
+          </view>
+          <view class="progress-bg">
+            <view class="progress-bar" style="width: {{progressWidth}}"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="px-4 flex-col">
+      <button
+        class="action-btn btn-wechat"
+        bindtap="handleWeChatRemind"
+        disabled="{{isReminding}}"
+      >
+        <text class="font-bold text-white">{{isReminding ? '发送中...' : '微信一键催办'}}</text>
+      </button>
+      <button
+        class="action-btn btn-primary mt-4"
+        bindtap="handleExportReport"
+      >
+        <text class="font-bold text-white">生成公示报表</text>
+      </button>
+      <!-- 疑问处理入口 -->
+      <view class="question-entry" bindtap="goToQuestions">
+        <view class="question-entry-left">
+          <text class="question-entry-icon">❓</text>
+          <text class="question-entry-text">员工疑问</text>
+        </view>
+        <view class="question-entry-right">
+          <text class="question-entry-count" wx:if="{{questionCount > 0}}">{{questionCount}} 待处理</text>
+          <text class="question-entry-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 未填报名单 -->
+    <view class="px-4 mt-10 mb-6 flex items-center justify-between">
+      <text class="text-lg font-black">未填报名单 ({{summary.pending}})</text>
+    </view>
+
+    <view class="px-4 pb-8 flex-col">
+      <block wx:if="{{pendingWorkers.length === 0}}">
+        <view class="text-center py-8 text-slate-400 text-sm">所有员工均已填报 🎉</view>
+      </block>
+      <block wx:else>
+        <view wx:for="{{pendingWorkers}}" wx:key="_id" class="worker-card">
+          <view class="flex items-center gap-4">
+            <!-- 头像占位 -->
+            <view class="avatar-placeholder">
+              {{item.name[0]}}
+            </view>
+            <view class="flex-1">
+              <view class="font-bold text-slate-900 text-lg">{{item.name}}</view>
+              <view class="text-sm text-slate-500 mt-2">班组：{{item.team || '未分配'}}</view>
+            </view>
+            <view class="flex-col items-end">
+              <text class="status-tag">待填报</text>
+              <view class="btn-outline-primary" bindtap="handleWeChatRemind">催办</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 疑问列表弹窗 -->
+  <view class="questions-list-modal" wx:if="{{showQuestionsList}}">
+    <view class="questions-list-mask" bindtap="hideQuestionsList"></view>
+    <view class="questions-list-content">
+      <view class="questions-list-header">
+        <text class="questions-list-title">员工疑问 ({{questionsList.length}})</text>
+        <text class="questions-list-close" bindtap="hideQuestionsList">✕</text>
+      </view>
+
+      <scroll-view scroll-y class="questions-list-body">
+        <block wx:if="{{questionsList.length === 0}}">
+          <view class="questions-empty">暂无疑问</view>
+        </block>
+        <block wx:else>
+          <view
+            wx:for="{{questionsList}}"
+            wx:key="_id"
+            class="question-item"
+            bindtap="onQuestionItemTap"
+            data-question="{{item}}"
+          >
+            <view class="question-item-header">
+              <text class="question-item-name">{{item.workerName}}</text>
+              <text class="question-item-status {{item.status}}" style="padding: 2rpx 12rpx;">{{item.status === 'pending' ? '待处理' : item.status === 'replied' ? '已回复' : '已解决'}}</text>
+            </view>
+            <view class="question-item-content">{{item.content}}</view>
+            <view class="question-item-time">{{item.createTimeDisplay}}</view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 疑问详情弹窗 -->
+  <view class="question-modal" wx:if="{{showQuestionModal}}">
+    <view class="question-mask" bindtap="hideQuestionModal"></view>
+    <view class="question-content">
+      <view class="question-header">
+        <text class="question-title">疑问详情</text>
+        <text class="question-close" bindtap="hideQuestionModal">✕</text>
+      </view>
+
+      <view class="question-body">
+        <!-- 员工信息 -->
+        <view class="question-info-row">
+          <text class="question-label">员工：</text>
+          <text class="question-value">{{currentQuestion.workerName}}</text>
+        </view>
+
+        <view class="question-info-row">
+          <text class="question-label">状态：</text>
+          <text class="question-item-status {{currentQuestion.status}}">{{currentQuestion.status === 'pending' ? '待处理' : currentQuestion.status === 'replied' ? '已回复' : '已解决'}}</text>
+        </view>
+
+        <view class="question-info-row">
+          <text class="question-label">提交时间：</text>
+          <text class="question-value">{{currentQuestion.createTimeDisplay}}</text>
+        </view>
+
+        <!-- 对应借支 -->
+        <view class="question-section" wx:if="{{currentQuestionAdvance}}">
+          <text class="question-section-title">对应借支</text>
+          <view class="current-advances" bindtap="editQuestionAdvance" data-item="{{currentQuestionAdvance}}">
+            <view class="current-advance-row">
+              <text class="current-advance-date">{{currentQuestionAdvance.date}}</text>
+              <text class="current-advance-method">{{currentQuestionAdvance.method}}</text>
+            </view>
+            <view class="current-advance-amount">¥{{currentQuestionAdvance.amount}}</view>
+          </view>
+        </view>
+
+        <!-- 疑问内容 -->
+        <view class="question-section">
+          <text class="question-section-title">疑问内容</text>
+          <view class="question-text">{{currentQuestion.content}}</view>
+        </view>
+
+        <!-- 借支修改弹窗 -->
+        <view class="advance-edit-modal" wx:if="{{showAdvanceEditModal}}">
+          <view class="advance-edit-content">
+            <view class="advance-edit-header">
+              <text>修改借支</text>
+              <text class="advance-edit-close" bindtap="hideAdvanceEditModal">✕</text>
+            </view>
+            <view class="advance-edit-body">
+              <view class="advance-edit-item">
+                <text class="advance-edit-label">借支金额</text>
+                <view class="advance-edit-input-wrap">
+                  <text class="advance-edit-prefix">¥</text>
+                  <input class="advance-edit-input" type="digit" value="{{advanceEditData.amount}}" bindinput="onAdvanceEditAmount"/>
+                </view>
+              </view>
+              <view class="advance-edit-item">
+                <text class="advance-edit-label">借支日期</text>
+                <picker mode="date" value="{{advanceEditData.date}}" bindchange="onAdvanceEditDate">
+                  <view class="advance-edit-picker">{{advanceEditData.date}}</view>
+                </picker>
+              </view>
+              <view class="advance-edit-item">
+                <text class="advance-edit-label">支付方式</text>
+                <picker mode="selector" range="{{advanceMethodOptions}}" bindchange="onAdvanceEditMethod">
+                  <view class="advance-edit-picker">{{advanceEditData.method || '请选择'}}</view>
+                </picker>
+              </view>
+              <view class="advance-edit-item">
+                <text class="advance-edit-label">备注说明</text>
+                <textarea class="advance-edit-textarea" value="{{advanceEditData.remark}}" bindinput="onAdvanceEditRemark" placeholder="请输入备注"/>
+              </view>
+            </view>
+            <view class="advance-edit-footer">
+              <view class="advance-edit-btn advance-edit-delete" bindtap="deleteQuestionAdvance">删除</view>
+              <view class="advance-edit-btn advance-edit-save" bindtap="saveQuestionAdvance">保存</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 处理完成按钮 -->
+        <view class="resolve-section">
+          <button class="btn-resolve-full" bindtap="markAsResolved">处理完成</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

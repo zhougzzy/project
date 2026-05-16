@@ -1,0 +1,85 @@
+<view class="container pb-10 pt-safe">
+  <block wx:if="{{userRole === 'WORKER'}}">
+    <view class="header p-6 bg-primary text-white shadow-md">
+      <view class="text-3xl font-black tracking-wider">个人中心</view>
+      <view class="text-sm mt-2 opacity-80">查看和编辑个人信息</view>
+      <view class="edit-btn" bindtap="goToEdit">
+        <text>编辑</text>
+      </view>
+    </view>
+
+    <view class="px-4 mt-4">
+      <view class="profile-card bg-white rounded-2xl p-6 shadow-sm">
+        <view class="profile-header flex items-center gap-4 mb-6">
+          <view class="avatar bg-primary text-white flex items-center justify-center">
+            <text class="text-2xl font-black">{{workerInfo.name[0] || '?'}}</text>
+          </view>
+          <view>
+            <view class="text-xl font-black text-slate-800">{{workerInfo.name}}</view>
+            <view class="text-sm text-slate-500 mt-1">{{workerInfo.team || '未分配班组'}}</view>
+          </view>
+        </view>
+
+        <view class="info-list">
+          <view class="info-item">
+            <view class="info-label">手机号</view>
+            <view class="info-value">{{workerInfo.phone || '未填写'}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="text-center mt-12 text-slate-400 text-xs">
+      <view>建筑考勤管理系统 v1.0</view>
+      <view class="mt-1">鱼鱼酱亲情制作！</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="header p-6 bg-primary text-white shadow-md">
+      <view class="text-3xl font-black tracking-wider">管理中心</view>
+      <view class="text-sm mt-2 opacity-80">系统基础数据与业务管理</view>
+    </view>
+
+    <view class="px-4 mt-6">
+      <view class="menu-group bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+        <navigator url="/pages/personal/list/list" class="menu-item">
+          <view class="flex items-center gap-3">
+            <view class="icon-box bg-blue-50 text-blue-500">工</view>
+            <text class="font-bold text-slate-800 text-lg">员工管理</text>
+          </view>
+          <view class="text-slate-300 font-bold text-xl">></view>
+        </navigator>
+
+        <navigator url="/pages/projects/list/list" class="menu-item">
+          <view class="flex items-center gap-3">
+            <view class="icon-box bg-orange-50 text-orange-500">地</view>
+            <text class="font-bold text-slate-800 text-lg">工地项目管理</text>
+          </view>
+          <view class="text-slate-300 font-bold text-xl">></view>
+        </navigator>
+
+        <navigator url="/pages/attendance/list/list" class="menu-item">
+          <view class="flex items-center gap-3">
+            <view class="icon-box bg-emerald-50 text-emerald-500">勤</view>
+            <text class="font-bold text-slate-800 text-lg">考勤明细管理</text>
+          </view>
+          <view class="text-slate-300 font-bold text-xl">></view>
+        </navigator>
+
+        <navigator url="/pages/advance/list/list" class="menu-item no-border">
+          <view class="flex items-center gap-3">
+            <view class="icon-box bg-purple-50 text-purple-500">款</view>
+            <text class="font-bold text-slate-800 text-lg">借支管理</text>
+          </view>
+          <view class="text-slate-300 font-bold text-xl">></view>
+        </navigator>
+      </view>
+    </view>
+
+    <view class="text-center mt-12 text-slate-400 text-xs">
+      <view>建筑考勤管理系统 v1.0</view>
+      <view class="mt-1">鱼鱼酱亲情制作！</view>
+    </view>
+  </block>
+</view>

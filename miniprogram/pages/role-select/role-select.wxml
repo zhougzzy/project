@@ -1,0 +1,116 @@
+<!--pages/role-select/role-select.wxml-->
+<view class="container">
+  <!-- 检查登录状态时显示 loading -->
+  <view class="loading-container" wx:if="{{checkingLogin}}">
+    <view class="loading-spinner"></view>
+    <view class="loading-text">正在检查登录状态...</view>
+  </view>
+
+  <!-- 正常显示的内容 -->
+  <view wx:else>
+  <!-- 顶部装饰 -->
+  <view class="top-decoration">
+    <view class="decoration-circle decoration-circle-1"></view>
+    <view class="decoration-circle decoration-circle-2"></view>
+    <view class="decoration-circle decoration-circle-3"></view>
+  </view>
+
+  <!-- Logo区域 -->
+  <view class="logo-section">
+    <view class="logo-wrapper">
+      <text class="logo-icon">🏗️</text>
+    </view>
+    <view class="app-name">工地考勤记账</view>
+    <view class="app-slogan">高效管理 · 便捷查看</view>
+  </view>
+
+  <!-- 角色选择 -->
+  <view class="role-section">
+    <view class="section-title">请选择您的身份</view>
+    
+    <view class="role-cards">
+      <!-- 管理员卡片 -->
+      <view class="role-card role-card-admin" bindtap="onAdminTap">
+        <view class="card-left">
+          <view class="card-icon-wrapper card-icon-admin">
+            <text class="card-icon">👨‍💼</text>
+          </view>
+          <view class="card-info">
+            <view class="card-title">我是管理员</view>
+            <view class="card-desc">管理员工、查看考勤、记账</view>
+          </view>
+        </view>
+        <view class="card-arrow">
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+
+      <!-- 员工卡片 -->
+      <view class="role-card role-card-worker" bindtap="onWorkerTap">
+        <view class="card-left">
+          <view class="card-icon-wrapper card-icon-worker">
+            <text class="card-icon">👷</text>
+          </view>
+          <view class="card-info">
+            <view class="card-title">我是员工</view>
+            <view class="card-desc">查看考勤、借款记录</view>
+          </view>
+        </view>
+        <view class="card-arrow">
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部版权 -->
+  <view class="footer">
+    <text class="footer-text">点击即表示同意</text>
+    <text class="footer-link">《用户协议》</text>
+  </view>
+
+  <!-- 管理员邀请码弹窗 -->
+  <view class="modal-mask" wx:if="{{showAdminModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-icon modal-icon-admin">🔐</view>
+        <view class="modal-title">管理员验证</view>
+      </view>
+      
+      <view class="modal-body">
+        <view class="input-label">请输入管理员邀请码</view>
+        <view class="input-wrapper">
+          <input
+            class="code-input"
+            type="text"
+            placeholder="例如：ADMIN_20260314"
+            placeholder-class="placeholder-style"
+            value="{{inviteCode}}"
+            bindinput="onInviteCodeInput"
+            maxlength="30"
+            adjust-position="{{false}}"
+          />
+        </view>
+        <view class="error-msg" wx:if="{{errorMsg}}">
+          <text class="error-icon">⚠️</text>
+          <text class="error-text">{{errorMsg}}</text>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" bindtap="onCancelAdmin">
+          取消
+        </button>
+        <button
+          class="modal-btn modal-btn-confirm"
+          bindtap="onConfirmAdmin"
+          disabled="{{verifying}}"
+        >
+          <text wx:if="{{!verifying}}">确认验证</text>
+          <text wx:else>验证中...</text>
+        </button>
+      </view>
+    </view>
+  </view>
+  </view>
+</view>

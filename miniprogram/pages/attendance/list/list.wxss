@@ -1,0 +1,164 @@
+/* pages/attendance/list/list.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f6f7f8;
+  display: flex;
+  flex-direction: column;
+}
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+/* 顶部标题 (复用之前的样式) */
+/* 顶部标题 */
+.header {
+  background-color: #ffffff;
+  padding: 24rpx 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  box-sizing: border-box;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* 筛选区 */
+.filter-section {
+  display: flex;
+  background-color: #ffffff;
+  padding: 24rpx 32rpx;
+  gap: 16rpx;
+  border-top: 1rpx solid #f1f5f9;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.02);
+  z-index: 10;
+}
+.filter-item {
+  flex: 1;
+  background-color: #f8fafc;
+  height: 72rpx;
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24rpx;
+}
+.filter-text {
+  font-size: 26rpx;
+  color: #334155;
+  font-weight: 500;
+  max-width: 140rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dropdown-icon {
+  font-size: 20rpx;
+  color: #94a3b8;
+  margin-left: 8rpx;
+}
+
+/* 列表区 */
+.list-container {
+  flex: 1;
+  padding: 32rpx;
+}
+.worker-card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.02);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1rpx dashed #e2e8f0;
+  padding-bottom: 24rpx;
+  margin-bottom: 24rpx;
+}
+.worker-info {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.avatar { font-size: 48rpx; }
+.worker-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+.total-days {
+  display: flex;
+  align-items: baseline;
+  color: #15803d;
+}
+.days-num {
+  font-size: 40rpx;
+  font-weight: 900;
+}
+.days-unit {
+  font-size: 24rpx;
+  margin-left: 4rpx;
+  font-weight: 500;
+}
+.project-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 0;
+}
+.proj-name {
+  font-size: 28rpx;
+  color: #475569;
+}
+.proj-days {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* 空状态与悬浮按钮 */
+.empty-state {
+  padding-top: 120rpx;
+  text-align: center;
+}
+.empty-text { color: #94a3b8; font-size: 28rpx; }
+.fab {
+  position: fixed;
+  right: 48rpx;
+  bottom: calc(48rpx + env(safe-area-inset-bottom));
+  width: 112rpx;
+  height: 112rpx;
+  background-color: #0f172a;
+  border-radius: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 30rpx rgba(15, 23, 42, 0.3);
+  z-index: 20;
+}
+
+/* 弹窗样式 */
+.modal-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
+  z-index: 60; display: flex; align-items: center; justify-content: center; padding: 32rpx;
+}
+.modal-content {
+  background-color: #ffffff; border-radius: 32rpx; padding: 48rpx; width: 100%; max-width: 600rpx;
+}
+.modal-title { font-size: 36rpx; font-weight: 700; color: #0f172a; display: block; margin-bottom: 32rpx; }
+.date-picker-group { margin-bottom: 32rpx; }
+.modal-label { font-size: 28rpx; font-weight: 700; color: #64748b; margin-bottom: 16rpx; display: block; }
+.modal-input {
+  width: 100%; height: 96rpx; line-height: 96rpx; padding: 0 32rpx;
+  border-radius: 24rpx; border: 1rpx solid #e2e8f0; font-size: 32rpx; color: #0f172a; box-sizing: border-box;
+}
+.modal-btns { display: flex; gap: 24rpx; margin-top: 48rpx; }
+.modal-btn { flex: 1; padding: 24rpx 0; border-radius: 24rpx; font-size: 32rpx; font-weight: 700; text-align: center; }
+.btn-cancel { background-color: #f1f5f9; color: #64748b; }
+.btn-confirm { background-color: #0f172a; color: #ffffff; }

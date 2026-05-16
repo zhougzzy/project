@@ -1,0 +1,101 @@
+<view class="container {{showKeypad ? 'pb-keypad' : ''}}">
+  <view class="form-group">
+    <view class="label">选择工人 <text class="required">*</text></view>
+    <picker mode="selector" range="{{workers}}" range-key="name" bindchange="onWorkerChange">
+      <view class="picker-box {{selectedWorker ? 'has-value' : ''}}">
+        {{selectedWorker ? selectedWorker.name : '请选择一名工人'}}
+        <text class="arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="form-row">
+    <view class="form-group half">
+      <view class="label">日期 <text class="required">*</text></view>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="picker-box has-value">
+          {{date}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-group half">
+      <view class="label">金额 (¥) <text class="required">*</text></view>
+      <!-- 改为点击唤起自定义键盘 -->
+      <view class="picker-box amount-box {{amount ? 'has-value' : ''}}" bindtap="toggleKeypad">
+        <text class="amount-text">{{amount || '0.00'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <view class="method-header">
+      <view class="label">支付方式</view>
+      <view class="custom-btn" bindtap="showCustomMethodModal">+ 自定义</view>
+    </view>
+    <view class="method-tags">
+      <view class="tag {{method === item ? 'active' : ''}}" wx:for="{{methods}}" wx:key="*this" bindtap="onMethodSelect" data-method="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <view class="label">备注</view>
+    <textarea class="textarea-box" placeholder="添加预支明细备注..." value="{{remark}}" bindinput="onRemarkInput"></textarea>
+  </view>
+
+  <!-- 新增：转账截图/凭证 -->
+  <view class="form-group">
+    <view class="label">转账截图 / 凭证</view>
+    <view class="image-grid">
+      <view class="image-item" wx:for="{{images}}" wx:key="*this">
+        <image src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
+        <view class="delete-btn" bindtap="removeImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="upload-btn" bindtap="chooseImage" wx:if="{{images.length < 3}}">
+        <text class="camera-icon">📷</text>
+        <text class="upload-text">上传凭证</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="submit-btn-area">
+    <button class="btn-submit" bindtap="onSubmit" loading="{{submitting}}">立即记录</button>
+  </view>
+</view>
+
+<!-- 自定义数字键盘 -->
+<view class="keypad-mask" wx:if="{{showKeypad}}" bindtap="toggleKeypad"></view>
+<view class="keypad {{showKeypad ? 'show' : ''}}">
+  <view class="keypad-header">
+    <text>输入金额</text>
+    <text class="keypad-close" bindtap="toggleKeypad">完成</text>
+  </view>
+  <view class="keypad-keys">
+    <view class="key" bindtap="onKeyTap" data-key="1">1</view>
+    <view class="key" bindtap="onKeyTap" data-key="2">2</view>
+    <view class="key" bindtap="onKeyTap" data-key="3">3</view>
+    <view class="key" bindtap="onKeyTap" data-key="4">4</view>
+    <view class="key" bindtap="onKeyTap" data-key="5">5</view>
+    <view class="key" bindtap="onKeyTap" data-key="6">6</view>
+    <view class="key" bindtap="onKeyTap" data-key="7">7</view>
+    <view class="key" bindtap="onKeyTap" data-key="8">8</view>
+    <view class="key" bindtap="onKeyTap" data-key="9">9</view>
+    <view class="key" bindtap="onKeyTap" data-key=".">.</view>
+    <view class="key" bindtap="onKeyTap" data-key="0">0</view>
+    <view class="key key-delete" bindtap="onKeyDelete">⌫</view>
+  </view>
+</view>
+
+<!-- 自定义支付方式弹窗 -->
+<view class="modal-mask" wx:if="{{showMethodModal}}">
+  <view class="modal-content">
+    <view class="modal-title">添加支付方式</view>
+    <input class="modal-input" placeholder="如：支付宝、对公转账" value="{{newMethod}}" bindinput="onNewMethodInput" auto-focus/>
+    <view class="modal-btns">
+      <view class="modal-btn cancel" bindtap="hideCustomMethodModal">取消</view>
+      <view class="modal-btn confirm" bindtap="confirmCustomMethod">确定</view>
+    </view>
+  </view>
+</view>

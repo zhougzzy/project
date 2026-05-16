@@ -1,0 +1,96 @@
+/* 基础重置 */
+page {
+  background-color: #f6f7f8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+    sans-serif;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+/* 基础色值 */
+.text-primary { color: #1975d2; }
+.bg-primary { background-color: #1975d2; }
+.text-green { color: #10b981; }
+.text-orange { color: #f59e0b; }
+
+/* 统计卡片样式 */
+.stats-card { display: flex; background: #fff; margin: 20rpx 30rpx; padding: 30rpx; border-radius: 16rpx; box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.02); }
+.stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; border-right: 1rpx solid #eee; }
+.stat-item:last-child { border-right: none; }
+.stat-value { font-size: 36rpx; font-weight: bold; color: #333; }
+.stat-label { font-size: 24rpx; color: #999; margin-top: 8rpx; }
+
+/* 详情页统计与Tabs */
+.stats-summary { display: flex; gap: 20rpx; padding: 30rpx; }
+.stat-box { flex: 1; background: #fff; padding: 30rpx; border-radius: 16rpx; border: 1rpx solid #eee; }
+.stat-title { font-size: 24rpx; color: #999; display: block; margin-bottom: 10rpx; }
+.stat-num { font-size: 36rpx; font-weight: bold; color: #333; }
+
+.record-tabs { display: flex; background: #fff; border-bottom: 1rpx solid #eee; }
+.record-tabs .tab { flex: 1; text-align: center; padding: 24rpx 0; font-size: 28rpx; color: #666; font-weight: bold; }
+.record-tabs .tab.active { color: #1975d2; border-bottom: 4rpx solid #1975d2; }
+
+.record-list { padding: 30rpx; }
+.add-advance-btn { width: 100%; background: rgba(25, 117, 210, 0.05); color: #1975d2; border: 2rpx dashed rgba(25, 117, 210, 0.3); border-radius: 16rpx; font-size: 28rpx; font-weight: bold; padding: 20rpx 0; margin-bottom: 20rpx; }
+.record-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 30rpx; border-radius: 16rpx; border: 1rpx solid #eee; margin-bottom: 20rpx; }
+.record-remark { font-size: 28rpx; font-weight: bold; color: #333; display: block; }
+.record-date { font-size: 24rpx; color: #999; margin-top: 8rpx; display: block; }
+.record-amount { font-size: 36rpx; font-weight: bold; color: #1975d2; }
+.record-status { font-size: 20rpx; color: #10b981; font-weight: bold; display: block; text-align: right; margin-top: 8rpx; }
+
+view, text, scroll-view, image, button, input {
+  box-sizing: border-box;
+}
+
+/* 常用 Flex 布局原子类 */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 16rpx; }
+.gap-3 { gap: 24rpx; }
+.gap-4 { gap: 32rpx; }
+.flex-1 { flex: 1; }
+
+/* 颜色原子类 */
+.bg-white { background-color: #ffffff; }
+.bg-primary { background-color: #0EA5E9; }
+.bg-slate-50 { background-color: #f8fafc; }
+.text-primary { color: #0EA5E9; }
+.text-white { color: #ffffff; }
+.text-slate-400 { color: #94a3b8; }
+.text-slate-500 { color: #64748b; }
+.text-slate-900 { color: #0f172a; }
+.text-red-500 { color: #ef4444; }
+.text-green-600 { color: #16a34a; }
+
+/* 字体原子类 */
+.font-bold { font-weight: bold; }
+.font-black { font-weight: 900; }
+.text-xs { font-size: 24rpx; }
+.text-sm { font-size: 26rpx; }
+.text-base { font-size: 28rpx; }
+.text-lg { font-size: 32rpx; }
+.text-xl { font-size: 36rpx; }
+.text-2xl { font-size: 48rpx; }
+
+/* 间距与圆角 */
+.p-4 { padding: 32rpx; }
+.px-4 { padding-left: 32rpx; padding-right: 32rpx; }
+.py-4 { padding-top: 32rpx; padding-bottom: 32rpx; }
+.mt-2 { margin-top: 16rpx; }
+.mt-4 { margin-top: 32rpx; }
+.mb-4 { margin-bottom: 32rpx; }
+
+.rounded-lg { border-radius: 16rpx; }
+.rounded-xl { border-radius: 24rpx; }
+.rounded-full { border-radius: 9999rpx; }
+
+/* 边框与阴影 */
+.border { border: 1rpx solid #e2e8f0; }
+.border-b { border-bottom: 1rpx solid #e2e8f0; }
+.shadow-sm { box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05); }
+.shadow-md { box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.08); }

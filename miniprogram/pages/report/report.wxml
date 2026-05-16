@@ -1,0 +1,66 @@
+<!--pages/report/report.wxml-->
+<view class="container pb-32 pt-safe"> <!-- 加了 pt-safe 解决顶部遮挡 -->
+  
+  <!-- 头部信息 -->
+  <view class="header p-6 bg-white mb-4 shadow-sm">
+    <view class="text-2xl font-black text-slate-800">{{month}} 考勤公示</view>
+    <view class="text-slate-500 text-sm mt-2">请各位工友仔细核对本月出勤天数及工地明细。</view>
+  </view>
+
+  <!-- 数据表格 -->
+  <view class="px-4">
+    <view class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+      
+      <!-- 表头 -->
+      <view class="table-header">
+        <view class="th-name">姓名</view>
+        <view class="th-details">
+          <view class="th-project">工地项目</view>
+          <view class="th-days">天数</view>
+          <view class="th-remark">备注</view>
+        </view>
+      </view>
+
+      <!-- 暂无数据 -->
+      <block wx:if="{{groupedRecords.length === 0 && !isLoading}}">
+        <view class="text-center py-12 text-slate-400 text-sm">当月暂无考勤记录</view>
+      </block>
+
+      <!-- 🌟 表格内容 (分组渲染) -->
+      <block wx:else>
+        <view wx:for="{{groupedRecords}}" wx:key="workerId" class="table-row">
+          
+          <!-- 左侧：姓名 (合并单元格效果) -->
+          <view class="col-name">
+            <text class="font-bold text-slate-800 text-lg">{{item.workerName}}</text>
+            <text class="text-xs text-slate-400 mt-1">共 {{item.totalDays}} 天</text>
+          </view>
+          
+          <!-- 右侧：该工人对应的多个工地明细 -->
+          <view class="col-details">
+            <view 
+              wx:for="{{item.details}}" 
+              wx:for-item="detail" 
+              wx:for-index="idx" 
+              wx:key="idx"
+              class="detail-row {{idx === item.details.length - 1 ? 'no-border' : ''}}"
+            >
+              <view class="td-project truncate">{{detail.projectName}}</view>
+              <view class="td-days font-black text-primary">{{detail.days}}</view>
+              <view class="td-remark truncate text-slate-500">{{detail.remark}}</view>
+            </view>
+          </view>
+
+        </view>
+      </block>
+
+    </view>
+  </view>
+
+  <!-- 底部悬浮分享按钮 -->
+  <view class="fixed-bottom bg-white p-4 border-t border-slate-100 shadow-lg">
+    <button class="btn-primary w-full shadow-md" open-type="share">
+      <text class="font-bold text-white text-lg">一键分享到微信群</text>
+    </button>
+  </view>
+</view>

@@ -1,0 +1,57 @@
+<!-- pages/bind-account/bind-account.wxml -->
+<view class="container">
+  <!-- 顶部背景 -->
+  <view class="header-bg">
+    <view class="text-3xl font-black text-white">绑定员工账号</view>
+    <view class="text-sm text-white opacity-80 mt-2">请选择您要绑定的员工身份</view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content p-4">
+    <view wx:if="{{loading}}" class="text-center py-12 text-slate-400">加载中...</view>
+
+    <view wx:elif="{{workers.length === 0}}" class="empty-card bg-white p-8 rounded-xl text-center">
+      <view class="text-6xl mb-4">😢</view>
+      <view class="font-bold text-lg text-slate-700">暂无可绑定账号</view>
+      <view class="text-sm text-slate-500 mt-2">请联系管理员为您添加员工账号</view>
+    </view>
+
+    <view wx:else>
+      <!-- 提示 -->
+      <view class="tip-card bg-blue-50 p-4 rounded-xl mb-4">
+        <view class="text-sm text-blue-600">
+          <text class="font-bold">提示：</text>请选择您对应的员工身份，绑定后无法更改
+        </view>
+      </view>
+
+      <!-- 员工列表 -->
+      <view class="worker-list">
+        <view
+          wx:for="{{workers}}"
+          wx:key="_id"
+          class="worker-item {{selectedWorker._id === item._id ? 'selected' : ''}}"
+          bindtap="onWorkerTap"
+          data-id="{{item._id}}"
+        >
+          <view class="worker-avatar bg-blue-50 text-blue-500 font-bold">
+            {{item.name[0]}}
+          </view>
+          <view class="worker-info">
+            <view class="font-bold text-lg text-slate-800">{{item.name}}</view>
+            <view class="text-sm text-slate-500">{{item.team || '未分班组'}}</view>
+          </view>
+          <view class="check-icon" wx:if="{{selectedWorker._id === item._id}}">✓</view>
+        </view>
+      </view>
+
+      <!-- 绑定按钮 -->
+      <button
+        class="bind-btn bg-primary text-white"
+        bindtap="handleBind"
+        disabled="{{!selectedWorker || binding}}"
+      >
+        {{binding ? '绑定中...' : '确认绑定'}}
+      </button>
+    </view>
+  </view>
+</view>

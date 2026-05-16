@@ -1,0 +1,111 @@
+<view class="container pb-safe">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="page-title">项目管理</text>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-container">
+    <view class="search-bar">
+      <icon type="search" size="16" color="#94a3b8" class="search-icon" />
+      <input 
+        class="search-input" 
+        placeholder="搜索工地名称..." 
+        placeholder-class="search-placeholder"
+        bindinput="onSearchInput"
+        value="{{searchQuery}}"
+      />
+    </view>
+  </view>
+
+  <!-- 项目列表区域 -->
+  <scroll-view scroll-y class="list-container">
+    <block wx:if="{{filteredProjects.length > 0}}">
+      <view class="project-card" wx:for="{{filteredProjects}}" wx:key="_id">
+        <!-- 卡片上半部分：图标、名称、状态 -->
+        <view class="card-top">
+          <view class="icon-box">
+            <image src="/images/briefcase.png" mode="aspectFit" style="width: 48rpx; height: 48rpx;"></image>
+          </view>
+          <view class="info-box">
+            <text class="project-name">{{item.name}}</text>
+            <view class="status-row">
+              <!-- 进行中 状态 -->
+              <text 
+                wx:if="{{item.status === 'IN_PROGRESS'}}"
+                style="display: inline-block; padding: 2rpx 12rpx; font-size: 22rpx; line-height: 32rpx; border-radius: 6rpx; background-color: #dcfce7; color: #15803d; font-weight: 500;"
+              >进行中</text>
+
+              <!-- 已完工 状态 -->
+              <text 
+                wx:else
+                style="display: inline-block; padding: 2rpx 12rpx; font-size: 22rpx; line-height: 32rpx; border-radius: 6rpx; background-color: #f1f5f9; color: #475569; font-weight: 500;"
+              >已完工</text>
+              <text class="date-text">{{item.dateStr}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 卡片下半部分：操作按钮 -->
+        <view class="card-actions">
+          <view class="action-btn" bindtap="handleEdit" data-id="{{item._id}}">
+            <image src="/images/edit.png" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
+            <text>编辑</text>
+          </view>
+          <view class="action-btn text-red" bindtap="handleFinish" data-id="{{item._id}}" wx:if="{{item.status === 'IN_PROGRESS'}}">
+            <image src="/images/x.png" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
+            <text>完工下线</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view wx:else class="empty-state">
+      <text class="empty-text">暂无项目记录</text>
+    </view>
+  </scroll-view>
+
+  <!-- 悬浮新增按钮 -->
+  <view class="fab" bindtap="showAddModal">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 新增/编辑 弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}">
+    <view class="modal-content">
+      <text class="modal-title">{{editingId ? '编辑项目' : '新增项目'}}</text>
+      
+      <!-- 项目名称输入框 -->
+      <view class="modal-input-group">
+        <text class="modal-label">工地名称</text>
+        <input 
+          class="modal-input" 
+          placeholder="请输入工地名称" 
+          value="{{modalProjectName}}"
+          bindinput="onModalInput"
+          focus="{{showModal}}"
+        />
+      </view>
+
+      <!-- 编辑模式下展示日期信息 -->
+      <view class="modal-info-group" wx:if="{{editingId}}">
+        <view class="info-row">
+          <text class="info-label">创建日期：</text>
+          <text class="info-value">{{modalCreateDate || '未知'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">完工日期：</text>
+          <text class="info-value {{modalFinishDate ? 'text-green' : 'text-gray'}}">
+            {{modalFinishDate || '尚未完工'}}
+          </text>
+        </view>
+      </view>
+
+      <view class="modal-btns">
+        <view class="modal-btn btn-cancel" bindtap="hideModal">取消</view>
+        <view class="modal-btn btn-confirm" bindtap="confirmSaveProject">确定</view>
+      </view>
+    </view>
+  </view>
+</view>

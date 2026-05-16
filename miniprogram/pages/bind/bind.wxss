@@ -1,0 +1,114 @@
+/* pages/bind/bind.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.header-bg {
+  background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+  padding: 80rpx 40rpx 120rpx;
+}
+
+.text-3xl {
+  font-size: 48rpx;
+}
+
+.text-xl {
+  font-size: 36rpx;
+}
+
+.text-sm {
+  font-size: 26rpx;
+}
+
+.text-xs {
+  font-size: 22rpx;
+}
+
+.font-black {
+  font-weight: 900;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-primary {
+  color: #0EA5E9;
+}
+
+.bg-primary {
+  background-color: #0EA5E9;
+}
+
+.bg-blue-50 {
+  background-color: rgba(14, 165, 233, 0.1);
+}
+
+.text-blue-500 {
+  color: #0EA5E9;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.content {
+  margin-top: -80rpx;
+  padding: 0 32rpx;
+}
+
+.worker-card {
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64rpx;
+  margin: 0 auto;
+}
+
+.divider {
+  height: 1rpx;
+  background-color: #e2e8f0;
+}
+
+.my-6 {
+  margin-top: 48rpx;
+  margin-bottom: 48rpx;
+}
+
+.mt-4 {
+  margin-top: 32rpx;
+}
+
+.mt-6 {
+  margin-top: 48rpx;
+}
+
+.my-6 {
+  margin-top: 48rpx;
+  margin-bottom: 48rpx;
+}
+
+.bind-btn {
+  padding: 28rpx 0;
+  border-radius: 24rpx;
+  width: 100%;
+  font-size: 32rpx;
+  font-weight: 700;
+  border: none;
+}
+
+.bind-btn[disabled] {
+  opacity: 0.6;
+}

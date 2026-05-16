@@ -1,0 +1,118 @@
+<view class="container pb-safe">
+  <view class="header">
+    <view class="header-left">
+      <text class="title">{{mode === 'ADVANCE_ONLY' ? '借支明细' : '员工详情'}}</text>
+    </view>
+    <view class="header-right" wx:if="{{mode === 'FULL'}}">
+      <text class="action-text text-primary" bindtap="goToEdit">编辑</text>
+      <text class="action-text text-danger" bindtap="handleDelete">删除</text>
+    </view>
+  </view>
+
+  <scroll-view class="main-content" scroll-y="true">
+    <view class="loading-full" wx:if="{{loading && !worker}}">加载中...</view>
+
+    <block wx:if="{{worker}}">
+      <view class="profile-header">
+        <view class="profile-top">
+          <view class="avatar">{{worker.name[0]}}</view>
+          <view class="info">
+            <text class="name">{{worker.name}}</text>
+            <text class="team">班组：{{worker.team || '未分配班组'}}</text>
+            <view style="display: flex; align-items: center; margin-top: 12rpx;">
+              <text wx:if="{{worker.status === 'LINKED'}}" style="display: inline-block; height: 36rpx; line-height: 36rpx; padding: 0 16rpx; font-size: 20rpx; font-weight: 700; border-radius: 8rpx; text-align: center; background-color: #dcfce7; color: #15803d;">已绑定微信</text>
+              <text wx:else style="display: inline-block; height: 36rpx; line-height: 36rpx; padding: 0 16rpx; font-size: 20rpx; font-weight: 700; border-radius: 8rpx; text-align: center; background-color: #fef3c7; color: #b45309;">未绑定</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="info-grid" wx:if="{{mode === 'FULL'}}">
+          <view class="info-item">
+            <text class="info-label">联系电话</text>
+            <text class="info-value">{{worker.phone || '未填写'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="month-selector" wx:if="{{mode === 'ADVANCE_ONLY'}}">
+        <view class="picker-wrap">
+          <picker mode="date" fields="month" value="{{selectedMonth}}" bindchange="onMonthChange">
+            <view class="picker-inner">
+              <text class="picker-text">{{selectedMonth}}</text>
+              <text class="picker-icon">v</text>
+            </view>
+          </picker>
+        </view>
+        <view class="month-total">
+          <text class="total-label">月度合计</text>
+          <text class="total-amount">￥{{totalAdvances}}</text>
+        </view>
+      </view>
+
+      <view class="stats-summary" wx:if="{{mode === 'FULL'}}">
+        <view class="stat-card">
+          <view class="stat-card" bindtap="goToAdvance">
+            <text>本月借支</text>
+            <text>{{attendanceDays}} 天</text>
+          </view>
+          <text class="stat-value text-primary">￥{{totalAdvances}}</text>
+        </view>
+        <view class="stat-card">
+          <view class="stat-card" bindtap="goToAttendance">
+            <text>本月出勤</text>
+            <text>{{attendanceDays}} 天</text>
+          </view>
+          <text class="stat-value">{{totalAttendanceDays}} 天</text>
+        </view>
+      </view>
+
+      <view class="records-section">
+        <view class="tabs" wx:if="{{mode === 'FULL'}}">
+          <view class="tab {{activeTab === 'advance' ? 'active' : ''}}" bindtap="switchTab" data-tab="advance">借支记录</view>
+          <view class="tab {{activeTab === 'attendance' ? 'active' : ''}}" bindtap="switchTab" data-tab="attendance">出勤历史</view>
+        </view>
+
+        <view class="records-content">
+          <block wx:if="{{activeTab === 'advance'}}">
+            <view class="add-advance-btn" bindtap="goToAddAdvance">
+              <text class="add-icon">+</text>
+              <text>添加借支记录</text>
+            </view>
+
+            <view class="loading" wx:if="{{loading}}">加载中...</view>
+            <block wx:elif="{{filteredAdvances.length > 0}}">
+              <view class="record-item" wx:for="{{filteredAdvances}}" wx:key="_id">
+                <view class="record-info">
+                  <text class="record-remark">{{item.remark || '无备注'}}</text>
+                  <text class="record-meta">{{item.date}} | {{item.method}}</text>
+                </view>
+                <text class="record-amount">￥{{item.amount}}</text>
+              </view>
+            </block>
+            <view class="empty-state" wx:else>暂无借支记录</view>
+          </block>
+
+          <block wx:if="{{activeTab === 'attendance'}}">
+            <view class="attendance-list">
+              <view class="loading" wx:if="{{loading}}">加载中...</view>
+              <block wx:elif="{{attendance.length > 0}}">
+                <view class="attendance-item" wx:for="{{attendance}}" wx:key="_id">
+                  <view class="att-info">
+                    <text class="att-month">{{item.month}}</text>
+                    <text class="att-project">{{item.project_name}}</text>
+                    <text class="att-remark" wx:if="{{item.remark}}">"{{item.remark}}"</text>
+                  </view>
+                  <view class="att-right">
+                    <text class="att-days">{{item.days}} 天</text>
+                    <text class="att-status">已提交</text>
+                  </view>
+                </view>
+              </block>
+              <view class="empty-state" wx:else>暂无出勤记录</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

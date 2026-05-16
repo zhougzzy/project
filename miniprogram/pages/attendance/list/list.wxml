@@ -1,0 +1,98 @@
+<!--pages/attendance/list/list.wxml-->
+
+<view class="container pb-safe">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="page-title">考勤明细</text>
+  </view>
+
+  <!-- 筛选条件区 -->
+  <view class="filter-section">
+    <!-- 月份选择 -->
+    <picker mode="date" fields="month" value="{{currentMonth}}" bindchange="onMonthChange">
+      <view class="filter-item">
+        <text class="filter-text">{{currentMonth}}</text>
+        <text class="dropdown-icon">▼</text>
+      </view>
+    </picker>
+
+    <!-- 人员选择 -->
+    <picker mode="selector" range="{{workerOptions}}" range-key="name" value="{{workerIndex}}" bindchange="onWorkerChange">
+      <view class="filter-item">
+        <text class="filter-text">{{workerOptions[workerIndex].name}}</text>
+        <text class="dropdown-icon">▼</text>
+      </view>
+    </picker>
+
+    <!-- 工地选择 -->
+    <picker mode="selector" range="{{projectOptions}}" range-key="name" value="{{projectIndex}}" bindchange="onProjectChange">
+      <view class="filter-item">
+        <text class="filter-text">{{projectOptions[projectIndex].name}}</text>
+        <text class="dropdown-icon">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 考勤聚合列表区 -->
+  <scroll-view scroll-y class="list-container">
+    <block wx:if="{{aggregatedData.length > 0}}">
+      <view class="worker-card" wx:for="{{aggregatedData}}" wx:key="workerId">
+        <!-- 卡片头部：工人姓名 + 总天数 -->
+        <view class="card-header">
+          <view class="worker-info">
+            <text class="avatar">👷‍♂️</text>
+            <text class="worker-name">{{item.workerName}}</text>
+          </view>
+          <view class="total-days">
+            <text class="days-num">{{item.totalDays}}</text>
+            <text class="days-unit">天</text>
+          </view>
+        </view>
+        
+        <!-- 卡片主体：该工人在各个工地的分布 -->
+        <view class="card-body">
+          <view class="project-row" wx:for="{{item.projects}}" wx:for-item="proj" wx:key="projectId">
+            <text class="proj-name">📍 {{proj.projectName}}</text>
+            <text class="proj-days">{{proj.days}} 天</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view wx:else class="empty-state">
+      <text class="empty-text">该条件下暂无考勤记录</text>
+    </view>
+  </scroll-view>
+
+  <!-- 悬浮导出按钮 -->
+  <view class="fab" bindtap="showExportModal">
+    <text style="font-size: 40rpx;">📥</text>
+  </view>
+
+  <!-- 导出区间选择弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}">
+    <view class="modal-content">
+      <text class="modal-title">导出考勤数据</text>
+      
+      <view class="date-picker-group">
+        <text class="modal-label">开始月份</text>
+        <picker mode="date" fields="month" value="{{exportStart}}" bindchange="onExportStartChange">
+          <view class="modal-input">{{exportStart}}</view>
+        </picker>
+      </view>
+
+      <view class="date-picker-group">
+        <text class="modal-label">结束月份</text>
+        <picker mode="date" fields="month" value="{{exportEnd}}" bindchange="onExportEndChange">
+          <view class="modal-input">{{exportEnd}}</view>
+        </picker>
+      </view>
+
+      <view class="modal-btns">
+        <view class="modal-btn btn-cancel" bindtap="hideExportModal">取消</view>
+        <view class="modal-btn btn-confirm" bindtap="confirmExport">生成Excel</view>
+      </view>
+    </view>
+  </view>
+</view>

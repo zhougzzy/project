@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/role-select/role-select",
+    "pages/index/index",
+    "pages/record/record",
+    "pages/manage/manage",
+    "pages/report/report",
+    "pages/recordAdd/recordAdd",
+    "pages/worker-detail/worker-detail",
+    "pages/worker-edit/worker-edit",
+    "pages/personal/list/list",
+    "pages/personal/edit/edit",
+    "pages/personal/detail/detail",
+    "pages/bind/bind",
+    "pages/projects/list/list",
+    "pages/attendance/list/list",
+    "pages/advance/list/list",
+    "pages/my-records/my-records",
+    "pages/my-advance/my-advance",
+    "pages/worker-attendance/worker-attendance",
+    "pages/bind-account/bind-account"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "工地记账考勤",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#94a3b8",
+    "selectedColor": "#2563eb",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "考勤",
+        "iconPath": "images/tabbar/calendar.png",
+        "selectedIconPath": "images/tabbar/calendar-active.png"
+      },
+      {
+        "pagePath": "pages/record/record",
+        "text": "记账",
+        "iconPath": "images/tabbar/wallet.png",
+        "selectedIconPath": "images/tabbar/wallet-active.png"
+      },
+      {
+        "pagePath": "pages/manage/manage",
+        "text": "管理",
+        "iconPath": "images/tabbar/settings.png",
+        "selectedIconPath": "images/tabbar/settings-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

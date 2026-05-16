@@ -1,0 +1,44 @@
+<!--pages/bind/bind.wxml-->
+<view class="container">
+  <!-- 顶部背景 -->
+  <view class="header-bg">
+    <view class="text-3xl font-black text-white">账号绑定</view>
+    <view class="text-sm text-white opacity-80 mt-2">管理员邀请您绑定员工账号</view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content p-4">
+    <view class="worker-card bg-white p-6 rounded-xl text-center">
+      <!-- 头像 -->
+      <view class="avatar bg-blue-50 text-blue-500 font-black">
+        {{workerName[0]}}
+      </view>
+
+      <!-- 名字 -->
+      <view class="text-xl font-bold text-slate-800 mt-4">{{workerName}}</view>
+      <view class="text-sm text-slate-500 mt-2">邀请您绑定微信账号</view>
+
+      <!-- 分割线 -->
+      <view class="divider my-6"></view>
+
+      <!-- 提示 -->
+      <view class="tip-text text-sm text-slate-500">
+        绑定后，您将可以使用微信小程序查看考勤和借支记录
+      </view>
+
+      <!-- 绑定按钮 -->
+      <button
+        class="bind-btn bg-primary text-white"
+        bindtap="handleBind"
+        disabled="{{binding}}"
+      >
+        {{binding ? '绑定中...' : '确认绑定微信'}}
+      </button>
+    </view>
+
+    <!-- 底部说明 -->
+    <view class="text-center mt-6">
+      <view class="text-xs text-slate-400">绑定后无法解绑，请仔细确认</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,9 @@
+{
+  "name": "removeWorkerSensitiveData",
+  "version": "1.0.0",
+  "description": "Remove sensitive worker fields from cloud database",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

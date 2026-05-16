@@ -1,0 +1,137 @@
+/* pages/manage/manage.wxss */
+/* pages/manage/manage.wxss */
+.container { min-height: 100vh; background-color: #f6f7f8; }
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pb-10 { padding-bottom: 80rpx; }
+.p-6 { padding: 48rpx 40rpx; position: relative; }
+.px-4 { padding-left: 32rpx; padding-right: 32rpx; }
+.mt-2 { margin-top: 16rpx; }
+.mt-6 { margin-top: -32rpx; /* 负边距，让菜单稍微向上浮动覆盖在蓝色头部上 */ position: relative; z-index: 10; }
+.mt-12 { margin-top: 96rpx; }
+.mt-1 { margin-top: 8rpx; }
+
+.bg-white { background-color: #ffffff; }
+.bg-primary { background-color: #0ea5e9; } /* 主色调蓝色 */
+.bg-blue-50 { background-color: #eff6ff; }
+.bg-orange-50 { background-color: #fff7ed; }
+.bg-emerald-50 { background-color: #ecfdf5; }
+.bg-purple-50 { background-color: #faf5ff; }
+
+.text-white { color: #ffffff; }
+.text-blue-500 { color: #3b82f6; }
+.text-orange-500 { color: #f97316; }
+.text-emerald-500 { color: #10b981; }
+.text-purple-500 { color: #a855f7; }
+.text-slate-800 { color: #1e293b; }
+.text-slate-400 { color: #94a3b8; }
+.text-slate-300 { color: #cbd5e1; }
+
+.text-3xl { font-size: 56rpx; }
+.text-xl { font-size: 40rpx; }
+.text-lg { font-size: 32rpx; }
+.text-sm { font-size: 28rpx; }
+.text-xs { font-size: 24rpx; }
+
+.font-black { font-weight: 900; }
+.font-bold { font-weight: bold; }
+.tracking-wider { letter-spacing: 4rpx; }
+.opacity-80 { opacity: 0.8; }
+.text-center { text-align: center; }
+
+.rounded-2xl { border-radius: 32rpx; }
+.shadow-md { box-shadow: 0 8rpx 24rpx rgba(14, 165, 233, 0.15); }
+.shadow-sm { box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.03); }
+.border { border: 2rpx solid #f1f5f9; }
+.overflow-hidden { overflow: hidden; }
+
+.flex { display: flex; }
+.items-center { align-items: center; }
+.gap-3 { gap: 24rpx; }
+
+/* 菜单项样式 */
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 40rpx;
+  border-bottom: 2rpx solid #f1f5f9;
+  background-color: #ffffff;
+  transition: background-color 0.2s;
+}
+.menu-item:active {
+  background-color: #f8fafc; /* 点击时的反馈效果 */
+}
+.menu-item.no-border {
+  border-bottom: none;
+}
+
+/* 图标盒子 */
+.icon-box {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+}
+
+/* 员工个人资料卡片 */
+.profile-card {
+  margin-top: -20rpx;
+}
+
+.profile-header {
+  border-bottom: 2rpx solid #f1f5f9;
+  padding-bottom: 32rpx;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  font-size: 48rpx;
+}
+
+.info-list {
+  margin-top: 8rpx;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #f8fafc;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #64748b;
+}
+
+.info-value {
+  font-size: 30rpx;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* 编辑按钮 */
+.edit-btn {
+  position: absolute;
+  right: 32rpx;
+  top: 48rpx;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12rpx 24rpx;
+  border-radius: 32rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.4);
+}
+
+.edit-btn text {
+  color: #ffffff;
+  font-size: 26rpx;
+}

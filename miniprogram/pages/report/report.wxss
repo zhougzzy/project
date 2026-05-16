@@ -1,0 +1,114 @@
+/* pages/report/report.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f6f7f8;
+}
+/* 解决顶部遮挡问题，增加顶部安全距离 */
+.pt-safe { padding-top: 20rpx; } 
+.pb-32 { padding-bottom: 180rpx; }
+.p-6 { padding: 40rpx; }
+.px-4 { padding-left: 32rpx; padding-right: 32rpx; }
+.p-4 { padding: 32rpx; }
+.mb-4 { margin-bottom: 32rpx; }
+.mt-1 { margin-top: 8rpx; }
+.mt-2 { margin-top: 16rpx; }
+.py-12 { padding-top: 96rpx; padding-bottom: 96rpx; }
+
+.bg-white { background-color: #ffffff; }
+.text-2xl { font-size: 48rpx; }
+.text-lg { font-size: 32rpx; }
+.text-sm { font-size: 28rpx; }
+.text-xs { font-size: 24rpx; }
+
+.font-black { font-weight: 900; }
+.font-bold { font-weight: bold; }
+
+.text-slate-800 { color: #1e293b; }
+.text-slate-500 { color: #64748b; }
+.text-slate-400 { color: #94a3b8; }
+.text-white { color: #ffffff; }
+.text-primary { color: #0ea5e9; }
+.text-center { text-align: center; }
+.truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.rounded-xl { border-radius: 24rpx; }
+.shadow-sm { box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
+.shadow-md { box-shadow: 0 8rpx 16rpx rgba(14, 165, 233, 0.2); }
+.shadow-lg { box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.05); }
+
+.border { border: 2rpx solid #e2e8f0; }
+.border-t { border-top: 2rpx solid #f1f5f9; }
+.overflow-hidden { overflow: hidden; }
+
+/* ================= 表格专属样式 ================= */
+.table-header {
+  display: flex;
+  background-color: #f8fafc;
+  border-bottom: 2rpx solid #e2e8f0;
+  font-weight: bold;
+  color: #475569;
+  font-size: 28rpx;
+}
+.th-name { width: 25%; text-align: center; padding: 24rpx 12rpx; border-right: 2rpx solid #e2e8f0; }
+.th-details { width: 75%; display: flex; }
+.th-project { width: 45%; text-align: center; padding: 24rpx 12rpx; border-right: 2rpx solid #e2e8f0; }
+.th-days { width: 25%; text-align: center; padding: 24rpx 12rpx; border-right: 2rpx solid #e2e8f0; }
+.th-remark { width: 30%; text-align: center; padding: 24rpx 12rpx; }
+
+.table-row {
+  display: flex;
+  border-bottom: 2rpx solid #e2e8f0;
+  background-color: #ffffff;
+  align-items: stretch; /* 让左侧姓名列自动拉伸填满高度 */
+}
+.table-row:last-child { border-bottom: none; }
+
+/* 左侧姓名列：垂直居中，实现合并单元格视觉效果 */
+.col-name {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 2rpx solid #e2e8f0;
+  padding: 24rpx 12rpx;
+  background-color: #fafafa; /* 给姓名列一点点底色区分 */
+}
+
+/* 右侧明细列 */
+.col-details {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+}
+.detail-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 2rpx solid #f1f5f9;
+}
+.detail-row.no-border { border-bottom: none; }
+
+.td-project { width: 45%; text-align: center; padding: 24rpx 12rpx; border-right: 2rpx solid #f1f5f9; font-size: 26rpx; }
+.td-days { width: 25%; text-align: center; padding: 24rpx 12rpx; border-right: 2rpx solid #f1f5f9; }
+.td-remark { width: 30%; text-align: center; padding: 24rpx 12rpx; font-size: 24rpx; }
+
+/* ================= 底部悬浮 ================= */
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 100;
+}
+.btn-primary {
+  background-color: #0ea5e9;
+  border-radius: 999rpx;
+  padding: 24rpx 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+.btn-primary::after { border: none; }
+.w-full { width: 100%; }

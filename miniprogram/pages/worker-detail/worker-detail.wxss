@@ -1,0 +1,150 @@
+/* worker-detail/worker-detail.wxss */
+/* pages/worker-detail/worker-detail.wxss */
+page {
+  background-color: #f6f7f8;
+}
+
+.container {
+  padding: 30rpx;
+}
+
+.header-card {
+  background-color: #108ee9;
+  padding: 40rpx 30rpx;
+  border-radius: 16rpx;
+  color: #fff;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(16, 142, 233, 0.3);
+}
+
+.name {
+  font-size: 44rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  opacity: 0.8;
+}
+
+.section {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  border-bottom: 1rpx solid #eee;
+  padding-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-btn {
+  margin: 0;
+}
+
+/* 表单样式 */
+.form-card {
+  background-color: #f9f9f9;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+  padding: 0 20rpx;
+  border-radius: 8rpx;
+  height: 80rpx;
+}
+
+.label {
+  width: 180rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.input, .picker-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.submit-btn {
+  width: 100% !important;
+  margin-top: 30rpx;
+}
+
+/* 列表样式 */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx dashed #eee;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.item-amount {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ff4d4f;
+}
+
+.item-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.item-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-right {
+  text-align: right;
+}
+
+.item-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-days {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #07C160;
+}
+
+.empty-text {
+  text-align: center;
+  color: #999;
+  font-size: 26rpx;
+  padding: 40rpx 0;
+}

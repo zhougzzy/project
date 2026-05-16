@@ -1,0 +1,153 @@
+<!-- pages/worker-attendance/worker-attendance.wxml -->
+<view class="container pb-20">
+  <!-- 头部区域 -->
+  <view class="header">
+    <view class="header-content">
+      <view class="header-left">
+        <view class="header-icon">📋</view>
+        <view class="header-text">
+          <text class="page-title">考勤填报</text>
+          <text class="page-subtitle">请如实填写上月考勤</text>
+        </view>
+      </view>
+      <picker mode="date" fields="month" value="{{currentMonth}}" start="{{monthRange.start}}" end="{{monthRange.end}}" bindchange="onMonthChange">
+        <view class="month-picker">
+          <text class="month-text">{{currentMonth}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 已提交提示 -->
+  <view wx:if="{{isSubmitted}}" class="submitted-tip">
+    <text>该月份已提交，如需修改，请联系管理员</text>
+  </view>
+
+  <view class="content">
+    <!-- 员工信息 -->
+    <view class="info-card">
+      <view class="info-avatar">{{workerInfo.name ? workerInfo.name[0] : '?'}}</view>
+      <view class="info-content">
+        <view class="info-name">{{workerInfo.name}}</view>
+        <view class="info-team">{{workerInfo.team || '未分配班组'}}</view>
+      </view>
+      <view class="info-badge">
+        <text class="badge-text">员工</text>
+      </view>
+    </view>
+
+    <!-- 统计卡片 -->
+    <view class="stats-card" wx:if="{{checkedCount > 0}}">
+      <view class="stat-item">
+        <text class="stat-num">{{checkedCount}}</text>
+        <text class="stat-label">已选工地</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{totalDays}}</text>
+        <text class="stat-label">出勤天数</text>
+      </view>
+    </view>
+
+    <!-- 工地考勤卡片列表 -->
+    <view class="section-title">
+      <text class="title-text">选择工地</text>
+      <text class="title-hint">点击卡片选择考勤工地</text>
+    </view>
+
+    <view class="project-list">
+      <block wx:for="{{projects}}" wx:key="_id">
+        <view class="project-card {{item.checked ? 'active' : ''}}" bindtap="toggleProject" data-index="{{index}}">
+          <!-- 卡片头部 -->
+          <view class="card-header">
+            <view class="project-info">
+              <view class="checkbox {{item.checked ? 'checked' : ''}}">
+                <text wx:if="{{item.checked}}">✓</text>
+              </view>
+              <view class="project-details">
+                <text class="project-name">{{item.name}}</text>
+                <text class="project-location" wx:if="{{item.location}}">📍 {{item.location}}</text>
+              </view>
+            </view>
+            <view class="days-display" wx:if="{{item.checked && item.days}}">
+              <text class="days-num">{{item.days}}</text>
+              <text class="days-unit">天</text>
+            </view>
+            <view class="days-display inactive" wx:elif="{{item.checked}}">
+              <text class="days-num">0</text>
+              <text class="days-unit">天</text>
+            </view>
+          </view>
+
+          <!-- 考勤填写区域 -->
+          <view class="card-body" wx:if="{{item.checked}}">
+            <!-- 出勤天数 -->
+            <view class="input-row">
+              <view class="input-label-row">
+                <text class="input-label">出勤天数</text>
+              </view>
+              <view class="days-input-wrapper" catchtap="{{isSubmitted ? 'noop' : 'noop'}}">
+                <view class="input-minus" catchtap="decreaseDays" data-index="{{index}}">-</view>
+                <input
+                  type="digit"
+                  class="days-input"
+                  value="{{item.days}}"
+                  data-index="{{index}}"
+                  bindinput="onDaysInput"
+                  placeholder="0"
+                  placeholder-class="placeholder"
+                  adjust-position="{{false}}"
+                  disabled="{{isSubmitted}}"
+                />
+                <view class="input-plus" catchtap="increaseDays" data-index="{{index}}">+</view>
+                <text class="unit">天</text>
+              </view>
+            </view>
+
+            <!-- 备注 -->
+            <view class="input-row" catchtap="noop">
+              <view class="input-label-row">
+                <text class="input-label">备注说明</text>
+              </view>
+              <input
+                class="remark-input"
+                value="{{item.remark}}"
+                data-index="{{index}}"
+                bindinput="onRemarkInput"
+                placeholder="填写备注信息（选填）"
+                placeholder-class="placeholder"
+                disabled="{{isSubmitted}}"
+              />
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 无工地提示 -->
+    <view wx:if="{{projects.length === 0}}" class="no-project">
+      <view class="no-project-icon">🏗️</view>
+      <text class="no-project-text">暂无可考勤的工地</text>
+      <text class="no-project-hint">请联系管理员分配工地</text>
+    </view>
+  </view>
+
+  <!-- 悬浮提交按钮 -->
+  <view class="fixed-bottom">
+    <view class="submit-bar">
+      <view class="summary">
+        <text class="summary-text">已选 {{checkedCount}} 个工地</text>
+        <text class="summary-total" wx:if="{{totalDays > 0}}">共 {{totalDays}} 天</text>
+        <text class="summary-warning" wx:if="{{totalDaysInvalid}}">不能超过当月天数</text>
+      </view>
+      <button
+        class="submit-btn {{checkedCount > 0 && !totalDaysInvalid ? 'active' : ''}}"
+        bindtap="onSubmit"
+        disabled="{{submitting || checkedCount === 0 || totalDaysInvalid}}"
+      >
+        {{submitting ? '提交中...' : '提交考勤'}}
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,69 @@
+<view class="container pb-safe">
+  <!-- 顶部区域：标题、搜索、筛选 -->
+  <view class="header">
+    <view class="header-top">
+      <text class="title">人员管理</text>
+      <view class="export-btn" bindtap="handleExport">
+        <text class="export-text">导出</text>
+      </view>
+    </view>
+    
+    <!-- 搜索框 -->
+    <view class="search-box">
+      <icon type="search" size="16" color="#94a3b8" />
+      <input class="search-input" placeholder="搜索姓名或手机号" value="{{search}}" bindinput="onSearchInput" />
+    </view>
+
+    <!-- 筛选标签 -->
+    <scroll-view class="filter-tabs" scroll-x="true" show-scrollbar="false">
+      <view class="tab {{filter === 'ALL' ? 'active-all' : ''}}" bindtap="setFilter" data-type="ALL">
+        全部 ({{workers.length}})
+      </view>
+      <view class="tab {{filter === 'LINKED' ? 'active-linked' : ''}}" bindtap="setFilter" data-type="LINKED">
+        已绑定微信 ({{linkedCount}})
+      </view>
+      <view class="tab {{filter === 'UNLINKED' ? 'active-unlinked' : ''}}" bindtap="setFilter" data-type="UNLINKED">
+        未绑定 ({{workers.length - linkedCount}})
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 工人列表 -->
+  <view class="list-container">
+    <view class="loading" wx:if="{{loading}}">加载中...</view>
+    <block wx:elif="{{filteredWorkers.length > 0}}">
+      <!-- 注意这里 wx:key 最好用 _id -->
+      <view class="worker-card" wx:for="{{filteredWorkers}}" wx:key="_id">
+        <!-- 注意这里传递的是 item._id -->
+        <view class="card-top" bindtap="goToDetail" data-id="{{item._id}}">
+          <view class="avatar">{{item.name[0]}}</view>
+          <view class="info">
+            <text class="name">{{item.name}}</text>
+            <text class="team">班组：{{item.team || '未分配'}}</text>
+          </view>
+          <view class="status {{item.status === 'LINKED' ? 'status-linked' : 'status-unlinked'}}">
+            {{item.status === 'LINKED' ? '已绑定' : '未绑定'}}
+          </view>
+        </view>
+        
+        <view class="card-bottom">
+          <!-- 注意这里传递的是 item._id -->
+          <view class="action-btn btn-detail" bindtap="goToDetail" data-id="{{item._id}}">查看详情</view>
+          <view class="action-btn btn-invite" wx:if="{{item.status !== 'LINKED'}}" bindtap="handleInvite" data-id="{{item._id}}">
+            邀请绑定
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view class="empty-state" wx:else>
+      <text class="empty-text">没有找到相关工人</text>
+    </view>
+  </view>
+
+  <!-- 悬浮新增按钮 -->
+  <view class="fab" bindtap="goToAdd">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

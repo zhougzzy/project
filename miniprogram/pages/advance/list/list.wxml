@@ -1,0 +1,168 @@
+<!--pages/advance/list/list.wxml-->
+<view class="container pb-safe">
+  <view class="header">
+    <text class="page-title">借支明细</text>
+  </view>
+
+  <!-- 筛选条件区 -->
+  <view class="filter-section">
+    <picker mode="date" fields="month" value="{{currentMonth}}" bindchange="onMonthChange">
+      <view class="filter-item">
+        <text class="filter-text">{{currentMonth}}</text>
+        <text class="dropdown-icon">▼</text>
+      </view>
+    </picker>
+
+    <picker mode="selector" range="{{workerOptions}}" range-key="name" value="{{workerIndex}}" bindchange="onWorkerChange">
+      <view class="filter-item">
+        <text class="filter-text">{{workerOptions[workerIndex].name}}</text>
+        <text class="dropdown-icon">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 总额显示区 -->
+  <view class="total-section" wx:if="{{advances.length > 0}}">
+    <text class="total-label">当前条件下借支总额：</text>
+    <text class="total-amount">¥{{totalAmount}}</text>
+  </view>
+
+  <!-- 借支列表区 -->
+  <scroll-view scroll-y class="list-container">
+    <block wx:if="{{advances.length > 0}}">
+      <view class="advance-card" wx:for="{{advances}}" wx:key="_id" bindtap="onCardTap" data-item="{{item}}">
+        <view class="card-header">
+          <view class="worker-info">
+            <text class="avatar">💰</text>
+            <text class="worker-name">{{item.workerName}}</text>
+          </view>
+          <view class="amount-text">- ¥{{item.amount}}</view>
+        </view>
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-label">借支日期：</text>
+            <text class="info-value">{{item.date}}</text>
+          </view>
+          <view class="info-row" wx:if="{{item.remark}}">
+            <text class="info-label">备注说明：</text>
+            <text class="info-value">{{item.remark}}</text>
+          </view>
+        </view>
+        <!-- 缩略图区域 -->
+        <view class="card-images" wx:if="{{item.images && item.images.length > 0}}">
+          <image wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" src="{{img}}" mode="aspectFill" class="card-thumb" bindtap="previewImage" data-url="{{img}}"></image>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="empty-state">
+      <text class="empty-text">该条件下暂无借支记录</text>
+    </view>
+  </scroll-view>
+
+  <!-- 悬浮导出按钮 -->
+  <view class="fab" bindtap="showExportModal">
+    <text style="font-size: 40rpx;">📥</text>
+  </view>
+
+  <!-- 导出弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}">
+    <view class="modal-content">
+      <text class="modal-title">导出借支数据</text>
+      <view class="date-picker-group">
+        <text class="modal-label">开始月份</text>
+        <picker mode="date" fields="month" value="{{exportStart}}" bindchange="onExportStartChange">
+          <view class="modal-input">{{exportStart}}</view>
+        </picker>
+      </view>
+      <view class="date-picker-group">
+        <text class="modal-label">结束月份</text>
+        <picker mode="date" fields="month" value="{{exportEnd}}" bindchange="onExportEndChange">
+          <view class="modal-input">{{exportEnd}}</view>
+        </picker>
+      </view>
+      <view class="modal-btns">
+        <view class="modal-btn btn-cancel" bindtap="hideExportModal">取消</view>
+        <view class="modal-btn btn-confirm" bindtap="confirmExport">生成Excel</view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="detail-modal-mask" wx:if="{{showDetailModal}}" bindtap="hideDetailModal"></view>
+  <view class="detail-modal" wx:if="{{showDetailModal}}" catchtap="stopPropagation">
+    <view class="detail-modal-header">
+      <text class="detail-modal-title">{{isEditing ? '修改借支' : '借支详情'}}</text>
+      <view class="detail-modal-close" bindtap="hideDetailModal">
+        <text>✕</text>
+      </view>
+    </view>
+
+    <view class="detail-modal-body" wx:if="{{currentRecord}}">
+      <!-- 员工信息 -->
+      <view class="detail-section">
+        <view class="detail-worker">
+          <view class="detail-avatar">{{currentRecord.workerName ? currentRecord.workerName[0] : '?'}}</view>
+          <view class="detail-worker-info">
+            <text class="detail-worker-name">{{currentRecord.workerName}}</text>
+            <text class="detail-worker-id" wx:if="{{currentRecord.workerId}}">工号：{{currentRecord.workerId}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 金额 -->
+      <view class="detail-amount-section">
+        <text class="detail-amount-label">借支金额</text>
+        <view class="detail-amount-edit" wx:if="{{isEditing}}">
+          <text class="amount-prefix">¥</text>
+          <input class="amount-input" type="digit" value="{{editData.amount}}" bindinput="onEditAmountInput"/>
+        </view>
+        <text class="detail-amount-value" wx:else>¥{{currentRecord.amount}}</text>
+      </view>
+
+      <!-- 详细信息 -->
+      <view class="detail-info-list">
+        <view class="detail-info-item">
+          <text class="detail-info-label">借支日期</text>
+          <picker mode="date" value="{{editData.date}}" bindchange="onEditDateChange" wx:if="{{isEditing}}">
+            <view class="detail-edit-picker">{{editData.date}}</view>
+          </picker>
+          <text class="detail-info-value" wx:else>{{currentRecord.date}}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="detail-info-label">支付方式</text>
+          <picker mode="selector" range="{{methodOptions}}" bindchange="onEditMethodChange" wx:if="{{isEditing}}">
+            <view class="detail-edit-picker">{{editData.method || '请选择'}}</view>
+          </picker>
+          <text class="detail-info-value" wx:else>{{currentRecord.method || '未设置'}}</text>
+        </view>
+        <view class="detail-info-item">
+          <text class="detail-info-label">备注说明</text>
+          <textarea class="detail-edit-textarea" value="{{editData.remark}}" bindinput="onEditRemarkInput" wx:if="{{isEditing}}" placeholder="请输入备注"></textarea>
+          <text class="detail-info-value" wx:else>{{currentRecord.remark || '无'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-modal-footer">
+      <view class="detail-btn detail-btn-delete" bindtap="onDeleteRecord" wx:if="{{!isEditing}}">
+        <text>删除记录</text>
+      </view>
+      <block wx:if="{{isEditing}}">
+        <view class="detail-btn detail-btn-cancel" bindtap="cancelEdit">
+          <text>取消</text>
+        </view>
+        <view class="detail-btn detail-btn-primary" bindtap="saveEdit">
+          <text>保存修改</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="detail-btn detail-btn-edit" bindtap="startEdit">
+          <text>修改</text>
+        </view>
+        <view class="detail-btn detail-btn-primary" bindtap="hideDetailModal">
+          <text>确定</text>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

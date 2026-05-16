@@ -1,0 +1,55 @@
+<view class="container pb-safe">
+  <view class="header">
+    <text class="title">{{workerId ? '编辑工人' : '新增工人'}}</text>
+  </view>
+
+  <view class="form-group">
+    <view class="form-item">
+      <text class="label">姓名 <text class="required">*</text></text>
+      <input
+        class="input"
+        placeholder="请输入真实姓名"
+        placeholder-class="input-placeholder"
+        value="{{formData.name}}"
+        bindinput="handleInput"
+        data-field="name"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">手机号</text>
+      <input
+        class="input"
+        type="number"
+        maxlength="11"
+        placeholder="请输入11位手机号"
+        placeholder-class="input-placeholder"
+        value="{{formData.phone}}"
+        bindinput="handleInput"
+        data-field="phone"
+      />
+    </view>
+
+    <view class="form-item border-none">
+      <text class="label">所属班组</text>
+      <input
+        class="input"
+        placeholder="例如：木工组、水电组"
+        placeholder-class="input-placeholder"
+        value="{{formData.team}}"
+        bindinput="handleInput"
+        data-field="team"
+      />
+    </view>
+  </view>
+
+  <view class="submit-btn-wrap">
+    <button
+      class="submit-btn {{!formData.name || submitting ? 'disabled' : ''}}"
+      bindtap="handleSubmit"
+      disabled="{{!formData.name || submitting}}"
+    >
+      {{submitting ? '保存中...' : '保存'}}
+    </button>
+  </view>
+</view>

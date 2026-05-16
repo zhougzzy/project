@@ -1,0 +1,84 @@
+<!--worker-detail/worker-detail.wxml-->
+<!-- pages/worker-detail/worker-detail.wxml -->
+<view class="container">
+  
+  <!-- 顶部：员工基本信息 -->
+  <view class="header-card">
+    <text class="name">{{worker_name}}</text>
+    <text class="subtitle">考勤与预支明细</text>
+  </view>
+
+  <!-- 预支管理区域 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">预支记录</text>
+      <button class="add-btn" size="mini" type="primary" bindtap="toggleAdvanceForm">
+        {{showAdvanceForm ? '取消添加' : '记一笔预支'}}
+      </button>
+    </view>
+
+    <!-- 添加预支的表单 (点击按钮后展开) -->
+    <view class="form-card" wx:if="{{showAdvanceForm}}">
+      <view class="input-group">
+        <text class="label">预支金额(元)</text>
+        <input class="input" type="digit" placeholder="输入金额" value="{{advanceAmount}}" bindinput="onAmountInput" />
+      </view>
+      <view class="input-group">
+        <text class="label">预支日期</text>
+        <picker mode="date" value="{{advanceDate}}" bindchange="onDateChange">
+          <view class="picker-text">{{advanceDate}}</view>
+        </picker>
+      </view>
+      <view class="input-group">
+        <text class="label">支付方式</text>
+        <input class="input" type="text" placeholder="如：现金、微信" value="{{advanceMethod}}" bindinput="onMethodChange" />
+      </view>
+      <view class="input-group">
+        <text class="label">备注事由</text>
+        <input class="input" type="text" placeholder="选填" value="{{advanceRemark}}" bindinput="onRemarkInput" />
+      </view>
+      <button class="submit-btn" type="primary" bindtap="submitAdvance" disabled="{{submitting}}">
+        {{submitting ? '保存中...' : '确认保存'}}
+      </button>
+    </view>
+
+    <!-- 预支历史列表 -->
+    <view class="list-area">
+      <view wx:if="{{advances.length === 0}}" class="empty-text">暂无预支记录</view>
+      <block wx:for="{{advances}}" wx:key="_id">
+        <view class="list-item">
+          <view class="item-left">
+            <text class="item-amount">- ¥{{item.amount}}</text>
+            <text class="item-desc">{{item.method}} <text wx:if="{{item.remark}}"> | {{item.remark}}</text></text>
+          </view>
+          <view class="item-right">
+            <text class="item-date">{{item.date}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 考勤记录区域 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">本月考勤 ({{month}})</text>
+    </view>
+    
+    <view class="list-area">
+      <view wx:if="{{attendanceRecords.length === 0}}" class="empty-text">本月暂无考勤</view>
+      <block wx:for="{{attendanceRecords}}" wx:key="_id">
+        <view class="list-item">
+          <view class="item-left">
+            <text class="item-title">{{item.project_name}}</text>
+            <text class="item-desc">{{item.remark || '无备注'}}</text>
+          </view>
+          <view class="item-right">
+            <text class="item-days">{{item.days}} 天</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+</view>

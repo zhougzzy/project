@@ -1,0 +1,52 @@
+<!-- pages/my-records/my-records.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">我的填报记录</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty-text">加载中...</view>
+  
+  <view wx:elif="{{records.length === 0}}" class="empty-text">
+    你还没有填报过考勤哦
+  </view>
+
+  <view wx:else class="record-list">
+    <block wx:for="{{records}}" wx:key="_id">
+      <view class="record-card">
+        <view class="card-header">
+          <text class="month-tag">{{item.month}}</text>
+        </view>
+        
+        <view class="card-body">
+          <!-- 遍历该月的多个工地 -->
+          <block wx:for="{{item.entries}}" wx:key="project_id" wx:for-item="entry">
+            <view class="project-entry">
+              <view class="project-name-row">
+                <text class="label">工地</text>
+                <text class="value">{{entry.project_name}}</text>
+              </view>
+              <view class="info-row">
+                <text class="label">出勤天数</text>
+                <text class="value highlight">{{entry.days}} 天</text>
+              </view>
+              <view class="info-row" wx:if="{{entry.remark}}">
+                <text class="label">备注</text>
+                <text class="value">{{entry.remark}}</text>
+              </view>
+            </view>
+          </block>
+          
+          <view class="info-row total-row">
+            <text class="label">合计</text>
+            <text class="value highlight">{{item.totalDays}} 天</text>
+          </view>
+          
+          <view class="info-row">
+            <text class="label">填报时间</text>
+            <text class="value date">{{item.formattedDate}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
