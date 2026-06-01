@@ -91,7 +91,7 @@ miniprogram-1/
 │  ├─ exportAdvance/         # 导出借支
 │  └─ ...
 ├─ docs/
-│  └─ prd/                   # 反推 PRD 文档
+│  └─ prd/                   # PRD 文档
 ├─ DOC_INDEX.md              # 数据库索引说明
 └─ README.md
 ```
